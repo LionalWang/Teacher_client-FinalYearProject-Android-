@@ -26,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
 
     boolean isUser = false;
     int tid;
+    String teachername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
                 EditText teachernameEditText = (EditText) findViewById(R.id.teachername);
                 EditText passwordEditText = (EditText) findViewById(R.id.password);
 
-                String teachername = teachernameEditText.getText().toString();
+                teachername = teachernameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
 
                 new AsyncTask<String, Void, Void>(){
@@ -77,17 +78,22 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         return null;
                     }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        super.onPostExecute(aVoid);
+                        if (isUser) {
+                            Intent intent = new Intent(LoginActivity.this, LectureActivity.class);
+                            intent.putExtra("tid", tid);
+                            intent.putExtra("teachername", teachername);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Toast toast = Toast.makeText(getApplicationContext(), "The user doesn't exist or password is wrong", Toast.LENGTH_SHORT );
+                            toast.show();
+                        }
+                    }
                 }.execute("http://10.10.240.27:5000/login/teacher/"+teachername+"/"+password);
-                if (isUser) {
-                    Intent intent = new Intent(LoginActivity.this, LectureActivity.class);
-                    intent.putExtra("tid", tid);
-                    intent.putExtra("teachername", teachername);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Toast toast = Toast.makeText(getApplicationContext(), "The user doesn't exist or password is wrong", Toast.LENGTH_SHORT );
-                    toast.show();
-                }
             }
         });
     }
