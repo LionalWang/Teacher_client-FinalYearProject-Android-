@@ -27,8 +27,6 @@ import java.util.List;
 
 public class DetailsActivity extends AppCompatActivity {
 
-    private List<Knowledge> knowledgeList = new ArrayList<Knowledge>();
-
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -63,15 +61,6 @@ public class DetailsActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
-
-
-        //initKnowledge();
-        //KnowledgeAdapter knowledgeAdapter = new KnowledgeAdapter(DetailsActivity.this,
-        //        R.layout.knowledge_item, knowledgeList);
-        //ListView kListView = (ListView) findViewById(R.id.knowledge_list);
-        //kListView.setAdapter(knowledgeAdapter);
-
 
     }
 
@@ -172,18 +161,8 @@ public class DetailsActivity extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.fragment_details, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-
-
             return rootView;
         }
     }
 
-    public void initKnowledge(){
-        Knowledge k1 = new Knowledge("How to study Android");
-        knowledgeList.add(k1);
-        Knowledge k2 = new Knowledge("How to study Python");
-        knowledgeList.add(k2);
-        Knowledge k3 = new Knowledge("How to study Database");
-        knowledgeList.add(k3);
-    }
 }

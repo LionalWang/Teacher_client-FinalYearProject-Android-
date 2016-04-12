@@ -25,7 +25,6 @@ public class KnowledgeAdapter extends ArrayAdapter<Knowledge> {
         Knowledge knowledge = getItem(position);
         View view = LayoutInflater.from(getContext()).inflate(resourceId, null);
         TextView knowledgeName = (TextView) view.findViewById(R.id.knowledge_name);
-        Button send = (Button) view.findViewById(R.id.send);
         knowledgeName.setText(knowledge.getName());
         return view;
     }

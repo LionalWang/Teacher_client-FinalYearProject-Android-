@@ -30,12 +30,11 @@ import java.util.List;
 public class LectureActivity extends AppCompatActivity {
 
     private List<Lecture> lectureList = new ArrayList<Lecture>();
-    String lecturename;
-    int lid;
-    Date time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        int lid;
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lecture);
         Intent intent = getIntent();
@@ -65,10 +64,9 @@ public class LectureActivity extends AppCompatActivity {
 
                         System.out.print("name________"+lecture.getString("lecturename"));
                         Log.e("d",lecture.getString("lecturename"));
+                        Log.e("d",lecture.getString("time"));
 
-//                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd Hh:mm:ss");
-//                        Date date = sdf.parse(lecture.getString("time"));
-                        Lecture newLecture = new Lecture(lecture.getString("lecturename"), new Date(2012,5,4,15,30));
+                        Lecture newLecture = new Lecture(lecture.getString("lecturename"), stringToDate(lecture.getString("time")), lecture.getInt("id"));
                         lectureList.add(newLecture);
                     }
                 } catch (MalformedURLException e) {
@@ -80,7 +78,6 @@ public class LectureActivity extends AppCompatActivity {
                 }
                 return null;
             }
-
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
@@ -94,11 +91,24 @@ public class LectureActivity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Lecture lecture = lectureList.get(position);
                         Intent intent = new Intent(LectureActivity.this, DetailsActivity.class);
-                        intent.putExtra("lectureName", lecture.getName());
+                        intent.putExtra("lid", lecture.getId());
                         startActivity(intent);
                     }
                 });
             }
-        }.execute("http://10.10.240.27:5000/lecture/" + tid);
+        }.execute("http://10.10.240.27:5000/api/lecture/" + tid);
+    }
+
+    public Date stringToDate(String str){
+
+        Date rcreate=new Date();
+        java.text.SimpleDateFormat newstr=new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+
+        try {
+            rcreate=(Date)newstr.parseObject(str);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return rcreate;
     }
 }
